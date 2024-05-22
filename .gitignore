@@ -40,6 +40,16 @@ bld/
 # Visual Studio 2017 auto generated files
 Generated\ Files/
 
+# Django #
+############
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+media
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
