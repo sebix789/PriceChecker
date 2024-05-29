@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>My Django App</title>
+    {% load static %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'priceChecker/landingPage.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css"
+    />
+  </head>
+  <body>
+    <div class="logo-container">
+      <div class="logo">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="400"
+          height="120"
+          viewBox="0 0 400 120"
+        >
+          <style>
+            .text {
+              font: bold 36px Arial;
+              fill: #4caf50;
+            }
+            .underline {
+              stroke: #4caf50;
+              stroke-width: 2;
+            }
+          </style>
+          <rect
+            x="30"
+            y="30"
+            width="270"
+            height="80"
+            width="400"
+            height="120"
+            fill="none"
+            stroke="#4caf50"
+            stroke-width="2"
+            rx="10"
+            ry="10"
+          />
+          <text x="50" y="80" class="text">PriceChecker</text>
+          <line x1="50" y1="90" x2="280" y2="90" class="underline" />
+        </svg>
+      </div>
+    </div>
+    <header class="header">
+      Discover the best deals with Price Checker! <br />
+      Compare prices from various online stores and save money on your favorite
+      products
+    </header>
+    <div class="base-container">
+      <h2>Choose Product</h2>
+      <form method="post">
+        <input
+          type="text"
+          placeholder="Which product do you looking for?"
+          name="url"
+        /><br />
+        Select Category:
+        <select name="data_type">
+          <option value="all">All Categories</option>
+          <option value="it-electronics">IT &amp; Electronics</option>
+          <option value="rtv-agd">RTV/AGD</option>
+          <option value="sports">Sports</option>
+          <option value="house-garden">House &amp; Garden</option>
+        </select>
+        <br />
+        <input type="submit" value="Search for offers" />
+      </form>
+    </div>
+  </body>
+  <script>
+    window.onload = function () {
+      document.querySelector(".header").classList.add("typing");
+    };
+  </script>
+</html>
