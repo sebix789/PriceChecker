@@ -20,9 +20,13 @@ body {
 }
 
 .base-container {
+  display: flex;
+  flex-direction: row;
+  gap: 8rem;
   padding-top: 3rem;
-  max-width: 450px;
   width: 100%;
+  padding-left: 10rem;
+  padding-right: 10rem;
 }
 
 .header {
@@ -79,6 +83,44 @@ a {
   animation:
     typing 4s steps(40, end) forwards,
     blink-caret 0.75s step-end forwards;
+}
+
+.wrapper {
+  width: calc(100% / 2);
+}
+
+.category {
+  margin-top: 5px;
+}
+
+input[type="submit"].db-search-btn {
+  margin-top: 25px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .base-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .wrapper {
+    width: 100vw;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  .header {
+    white-space: normal;
+    word-wrap: break-word;
+  }
+
+  input[type="text"],
+  select,
+  input[type="submit"] {
+    width: 100%;
+  }
 }
 
 /* Animations */
