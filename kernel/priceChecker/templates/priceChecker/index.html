@@ -61,11 +61,11 @@
     <div class="base-container">
       <div class="wrapper input-wrapper">
         <form method="post">
-          Choose Product
+          {% csrf_token %} Choose Product
           <input
             type="text"
             placeholder="Which product do you looking for?"
-            name="url"
+            name="product_name"
           /><br />
           <input type="submit" value="Search for offers" />
         </form>
@@ -74,16 +74,42 @@
         <form method="post">
           Look for already checked offers
           <select class="category" name="data_type">
-            <option value="all">All Categories</option>
-            <option value="it-electronics">IT &amp; Electronics</option>
-            <option value="rtv-agd">RTV/AGD</option>
-            <option value="sports">Sports</option>
-            <option value="house-garden">House &amp; Garden</option>
+            <option value="all">All Shops</option>
+            <option value="it-electronics">Euro RTV AGD</option>
+            <option value="rtv-agd">Ceneo.pl</option>
+            <option value="sports">Morele.net</option>
+            <option value="house-garden">Media Expert</option>
+            <option value="house-garden">Komputronik</option>
+            <option value="house-garden">X-Kom</option>
           </select>
           <br />
           <input class="db-search-btn" type="submit" value="Show me!" />
         </form>
       </div>
+    </div>
+    <div class="scrapped-content">
+      <table class="product-table">
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Shop</th>
+            <th>URL</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in products %}
+          <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.shop_name }}</td>
+            <td><a href="{{ product.url }}">Link</a></td>
+            <td>{{ product.timestamp }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </body>
   <script>

@@ -97,6 +97,17 @@ input[type="submit"].db-search-btn {
   margin-top: 25px;
 }
 
+.product-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 20px;
+}
+
+.product-table th,
+.product-table td {
+  text-align: center;
+}
+
 /* Responsive styles */
 @media (max-width: 768px) {
   .base-container {
@@ -120,6 +131,15 @@ input[type="submit"].db-search-btn {
   select,
   input[type="submit"] {
     width: 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .product-table td {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
