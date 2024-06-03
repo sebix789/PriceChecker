@@ -9,7 +9,6 @@ from bs4 import BeautifulSoup
 
 class ProductScraper:
     websites = {
-        'https://www.euro.com.pl/search.bhtml?keyword={}' : 'parse_euro',
         'https://www.ceneo.pl/szukaj-{}' : 'parse_ceneo',
         'https://www.morele.net/wyszukiwarka/?q={}&d=0' : 'parse_morele',
         'https://www.mediaexpert.pl/search?query[menu_item]=&query[querystring]={}': 'parse_media_expert',
@@ -26,8 +25,6 @@ class ProductScraper:
                 url = website.format(product_name)
                 print(f"Visiting: {url}")
                 driver.get(url)
-                if parser == 'parse_euro':
-                    WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.box-medium[_ngcontent-ng-c2960903584]')))
                 soup = BeautifulSoup(driver.page_source, 'html.parser')
                 yield from getattr(self, parser)(soup, url)
         finally:
@@ -55,18 +52,6 @@ class ProductScraper:
             url = f'https://{raw_url}{link}'
             timestamp = datetime.now().isoformat()
             shop_name = 'X-Kom'
-            yield {'name': name, 'price': price, 'shop_name': shop_name, 'url': url, 'timestamp': timestamp}
-            
-    def parse_euro(self, soup, url):
-        offer = soup.select_one('div.box-medium')
-        if offer:
-            name = offer.select_one('a').text
-            price = offer.select_one('span.price-template__large--total').text
-            link = offer.select_one('a')['href']
-            raw_url = url.split('//')[1].split('/')[0]
-            url = f'https://{raw_url}{link}'
-            timestamp = datetime.now().isoformat()
-            shop_name = 'Euro RTV AGD'
             yield {'name': name, 'price': price, 'shop_name': shop_name, 'url': url, 'timestamp': timestamp}
 
     def parse_ceneo(self, soup, url):
