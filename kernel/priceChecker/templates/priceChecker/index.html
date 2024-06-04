@@ -18,46 +18,49 @@
   </head>
   <body>
     <div class="logo-container">
-      <div class="logo">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="400"
-          height="120"
-          viewBox="0 0 400 120"
-        >
-          <style>
-            .text {
-              font: bold 36px Arial;
-              fill: #4caf50;
-            }
-            .underline {
-              stroke: #4caf50;
-              stroke-width: 2;
-            }
-          </style>
-          <rect
-            x="30"
-            y="30"
-            width="270"
-            height="80"
+      <a href="{% url 'priceChecker:index' %}">
+        <div class="logo">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
             width="400"
             height="120"
-            fill="none"
-            stroke="#4caf50"
-            stroke-width="2"
-            rx="10"
-            ry="10"
-          />
-          <text x="50" y="80" class="text">PriceChecker</text>
-          <line x1="50" y1="90" x2="280" y2="90" class="underline" />
-        </svg>
-      </div>
+            viewBox="0 0 400 120"
+          >
+            <style>
+              .text {
+                font: bold 36px Arial;
+                fill: #4caf50;
+              }
+              .underline {
+                stroke: #4caf50;
+                stroke-width: 2;
+              }
+            </style>
+            <rect
+              x="30"
+              y="30"
+              width="270"
+              height="80"
+              width="400"
+              height="120"
+              fill="none"
+              stroke="#4caf50"
+              stroke-width="2"
+              rx="10"
+              ry="10"
+            />
+            <text x="50" y="80" class="text">PriceChecker</text>
+            <line x1="50" y1="90" x2="280" y2="90" class="underline" />
+          </svg>
+        </div>
+      </a>
     </div>
     <header class="header">
       Discover the best deals with Price Checker! <br />
       Compare prices from various online stores and save money on your favorite
       products
     </header>
+    {% block content %}
     <div class="base-container">
       <div class="wrapper input-wrapper">
         <form method="post">
@@ -70,47 +73,8 @@
           <input type="submit" value="Search for offers" />
         </form>
       </div>
-      <div class="wrapper db-wrapper">
-        <form method="post">
-          Look for already checked offers
-          <select class="category" name="data_type">
-            <option value="all">All Shops</option>
-            <option value="it-electronics">Euro RTV AGD</option>
-            <option value="rtv-agd">Ceneo.pl</option>
-            <option value="sports">Morele.net</option>
-            <option value="house-garden">Media Expert</option>
-            <option value="house-garden">Komputronik</option>
-            <option value="house-garden">X-Kom</option>
-          </select>
-          <br />
-          <input class="db-search-btn" type="submit" value="Show me!" />
-        </form>
-      </div>
     </div>
-    <div class="scrapped-content">
-      <table class="product-table">
-        <thead>
-          <tr>
-            <th>Product Name</th>
-            <th>Price</th>
-            <th>Shop</th>
-            <th>URL</th>
-            <th>Timestamp</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for product in products %}
-          <tr>
-            <td>{{ product.name }}</td>
-            <td>{{ product.price }}</td>
-            <td>{{ product.shop_name }}</td>
-            <td><a href="{{ product.url }}">Link</a></td>
-            <td>{{ product.timestamp }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+    {% endblock %}
   </body>
   <script>
     window.onload = function () {
