@@ -1,11 +1,13 @@
 from datetime import datetime
-from multiprocessing import Process
-import json
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
+from pymongo import MongoClient
 from bs4 import BeautifulSoup
+from bson.regex import Regex
+
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 class ProductScraper:
     websites = {
@@ -26,11 +28,11 @@ class ProductScraper:
                 print(f"Visiting: {url}")
                 driver.get(url)
                 soup = BeautifulSoup(driver.page_source, 'html.parser')
-                yield from getattr(self, parser)(soup, url)
+                yield from getattr(self, parser)(soup, url, product_name)
         finally:
             driver.quit()
 
-    def parse_media_expert(self, soup, url):
+    def parse_media_expert(self, soup, url, product_name):
         offer = soup.select_one('div.offer-box')
         if offer:
             name = offer.select_one('a').text
@@ -40,9 +42,11 @@ class ProductScraper:
             url = f'https://{raw_url}{link}'
             timestamp = datetime.now().isoformat()
             shop_name = 'Media Expert'
-            yield {'name': name, 'price': price, 'shop_name': shop_name, 'url': url, 'timestamp': timestamp}
+            keywords = product_name.split(' ')
+            yield {'name': name, 'price': price, 'shop_name': shop_name, 'url': url, 'timestamp': timestamp, 
+                   'keywords': keywords }
 
-    def parse_x_kom(self, soup, url):
+    def parse_x_kom(self, soup, url, product_name):
         offer = soup.select_one('div.sc-f5aee401-0')
         if offer:
             name = offer.select_one('h3.sc-99fda726-0 span').text
@@ -52,9 +56,11 @@ class ProductScraper:
             url = f'https://{raw_url}{link}'
             timestamp = datetime.now().isoformat()
             shop_name = 'X-Kom'
-            yield {'name': name, 'price': price, 'shop_name': shop_name, 'url': url, 'timestamp': timestamp}
+            keywords = product_name.split(' ')
+            yield {'name': name, 'price': price, 'shop_name': shop_name, 'url': url, 'timestamp': timestamp,
+                   'keywords': keywords}
 
-    def parse_ceneo(self, soup, url):
+    def parse_ceneo(self, soup, url, product_name):
         offer = soup.select_one('div.cat-prod-row')
         if offer:
             new_badge = offer.select_one('a span.new-label')
@@ -68,9 +74,11 @@ class ProductScraper:
             url = f'https://{raw_url}{link}'
             timestamp = datetime.now().isoformat()
             shop_name = 'Ceneo.pl'
-            yield {'name': name, 'price': price, 'shop_name': shop_name, 'url': url, 'timestamp': timestamp}
+            keywords = product_name.split(' ')
+            yield {'name': name, 'price': price, 'shop_name': shop_name, 'url': url, 'timestamp': timestamp,
+                   'keywords': keywords}
 
-    def parse_morele(self, soup, url):
+    def parse_morele(self, soup, url, product_name):
         offer = soup.select_one('div.cat-product-content')
         if offer:
             name = offer.select_one('a').text
@@ -80,9 +88,11 @@ class ProductScraper:
             url = f'https://{raw_url}{link}'
             timestamp = datetime.now().isoformat()
             shop_name = 'Morele.net'
-            yield {'name': name, 'price': price, 'shop_name': shop_name, 'url': url, 'timestamp': timestamp}
+            keywords = product_name.split(' ')
+            yield {'name': name, 'price': price, 'shop_name': shop_name, 'url': url, 'timestamp': timestamp,
+                   'keywords': keywords}
             
-    def parse_komputronik(self, soup, url):
+    def parse_komputronik(self, soup, url, product_name):
         offer = soup.select_one('div.tests-product-entry')
         if offer:
             name = offer.select_one('a').text
@@ -91,30 +101,50 @@ class ProductScraper:
             url = f'{link}'
             timestamp = datetime.now().isoformat()
             shop_name = 'Komputronik'
-            yield {'name': name, 'price': price, 'shop_name': shop_name, 'url': url, 'timestamp': timestamp}
+            keywords = product_name.split(' ')
+            yield {'name': name, 'price': price, 'shop_name': shop_name, 'url': url, 'timestamp': timestamp,
+                   'keywords': keywords}
     
 
 def run_spider(product_name):
     scraper = ProductScraper()
     new_products = list(scraper.start_requests(product_name))
+    
+    client = MongoClient(env('MONGO_URI'))
+    db = client[env('DB_NAME')]
+    collection = db['products']
 
-    try:
-        with open('products.json', 'r') as f:
-            products = json.load(f)
-    except FileNotFoundError:
-        products = []
+    collection.insert_many(new_products)
 
-    products.extend(new_products)
+def products_search_service(product_name):    
+    client = MongoClient(env('MONGO_URI'))
+    db = client[env('DB_NAME')]
+    collection = db['products']
+    
+    keywords = product_name.split()
+    
+    products = list(collection.find({'keywords': {'$all': keywords}}))
+    
+    if not products:
+        run_spider(product_name)
+        products = list(collection.find({'keywords': {'$all': keywords}}))
+        
+    for product in products:
+        product['_id'] = str(product['_id'])
 
-    with open('products.json', 'w') as f:
-        json.dump(products, f)
+    return products
 
-def products_search_service(product_name):
-    p = Process(target=run_spider, args=(product_name,))
-    p.start()
-    p.join()
-
-    with open('products.json') as f:
-        products = json.load(f)
-
+def shop_filter_service(shop_name):
+    client = MongoClient(env('MONGO_URI'))
+    db = client[env('DB_NAME')]
+    collection = db['products']
+    
+    if shop_name == 'all':
+        products = list(collection.find())
+    else:
+        products = list(collection.find({'shop_name': shop_name}))
+    
+    for product in products:
+        product['_id'] = str(product['_id'])
+        
     return products
