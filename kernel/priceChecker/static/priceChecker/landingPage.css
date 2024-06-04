@@ -22,6 +22,7 @@ body {
 .base-container {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   gap: 8rem;
   padding-top: 3rem;
   width: 100%;
@@ -132,6 +133,10 @@ input[type="submit"].db-search-btn {
   input[type="submit"] {
     width: 100%;
   }
+}
+
+a {
+  cursor: pointer;
 }
 
 @media screen and (max-width: 600px) {
