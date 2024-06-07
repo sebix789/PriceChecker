@@ -2,27 +2,35 @@
 
 Web app created for comparing product price and offers.
 
-# Installation
-First you need to install MongoDB Community Server from official site https://www.mongodb.com/try/download/community
-Make sure to install also MongoDB Compass to graphical see and manage your data, but it's not required
-After successfull installation add Monogo to PATH variable by:
+## Project setup
+
+### Mongo (Windows)
+
+1. Install MongoDB Community Server from the [official site](https://www.mongodb.com/try/download/community)
+2. Add Monogo to `PATH`:
+
 - go to enviornment variables
 - change environmanet variables
 - in system variables look for PATH
-- add new entry your_path_to_mongo\MongoDB\Server\your_version
+- add new entry `your_path_to_mongo\MongoDB\Server\your_version`
 
-After that steps create folder data/db in main C folder (your path should look like that C:\data\db)
-Run CMD in this directory `mongod` command
+3. Create folder `data/db` in main C folder (your path should look like that `C:\data\db`)
+4. Run CMD in this directory `mongod` command
 
-In project root install and run virtual environment (venv, but it's not required)
-In project root run `pip install requirements.txt`
+### Django and virtual env
 
-After that in project root `kernel` run `invoke runserver`
+1. Make sure you're in the topmost `kernel` directory
+2. Create virtual environment `python3 -m venv .venv`
+3. Install dependencies `pip install requirements.txt`
+4. Run migrations `python manage.py migrate`
+5. Start the server `invoke runserver`
 
-Now app is running
+### Optional stuff
 
-# Packages
-Package used in project:
+- Install MongoDB Compass to see and manage your data with a GUI
+
+## Packages
+
 - beautifulsoup4==4.12.3
 - Django==4.2.7
 - django_environ==0.11.2
