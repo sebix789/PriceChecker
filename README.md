@@ -19,7 +19,7 @@ Web app created for comparing product price and offers.
 
 ### Django and virtual env
 
-1. Make sure you're in the parent `kernel` directory
+1. Make sure you're in the topmost `kernel` directory
 2. Create virtual environment `python3 -m venv .venv`
 3. Install dependencies `pip install requirements.txt`
 4. Run migrations `python manage.py migrate`
