@@ -6,15 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Price Checker</title>
     {% load static %}
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'priceChecker/landingPage.css' %}"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css"
-    />
+    <link rel="stylesheet" type="text/css" href="{% static 'priceChecker/landingPage.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
   </head>
   <body>
     <div class="logo-container">
@@ -54,13 +48,31 @@
           </svg>
         </div>
       </a>
+      <div class="nav-container">
+        <div class="hamburger-container">
+          <div class="hamburger-menu" onclick="toggleMenu()">
+            <i class="fas fa-bars" id="open-icon"></i>
+            <i class="fas fa-times close-icon" id="close-icon"></i>
+          </div>
+        </div>
+        <div class="nav-links">
+          <a class="nav-link" href="{% url 'priceChecker:about' %}">About</a>
+          <a class="nav-link" href="{% url 'priceChecker:viewAll' %}">Show All</a>
+        </div>
+      </div>
     </div>
+    <div class="list-container">
+      <ul class="list-wrapper">
+        <li><a class="nav-link" href="{% url 'priceChecker:about' %}">About</a></li>
+        <li><a class="nav-link" href="{% url 'priceChecker:viewAll' %}">Show All</a></li>
+      </ul>
+    </div>
+    {% block content %}
     <header class="header">
       Discover the best deals with Price Checker! <br />
       Compare prices from various online stores and save money on your favorite
       products
     </header>
-    {% block content %}
     <div class="base-container">
       <div class="wrapper input-wrapper">
         <form method="post">
@@ -77,6 +89,24 @@
     {% endblock %}
   </body>
   <script>
+    function toggleMenu() {
+      const hamburgerMenu = document.querySelector('.hamburger-menu');
+      const dropdownMenu = document.querySelector('.list-container');
+    
+      const hamburgerIcon = document.getElementById('open-icon');
+      const closeIcon = document.getElementById('close-icon');
+    
+      if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
+        dropdownMenu.style.display = 'block';
+        hamburgerIcon.style.opacity = '0';
+        closeIcon.style.opacity = '1';
+      } else {
+        dropdownMenu.style.display = 'none';
+        hamburgerIcon.style.opacity = '1';
+        closeIcon.style.opacity = '0';
+      }
+    };
+
     window.onload = function () {
       document.querySelector(".header").classList.add("typing");
     };

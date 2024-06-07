@@ -10,7 +10,8 @@ body {
 
 .logo-container {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   background-color: rebeccapurple;
 }
@@ -98,15 +99,109 @@ input[type="submit"].db-search-btn {
   margin-top: 25px;
 }
 
+a {
+  cursor: pointer;
+}
+
+.scrapped-content {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.nav-container {
+  padding-right: 5rem;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 22px;
+}
+
+.nav-link:hover {
+  color: #f3f3f3;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+/* Hambruger menu styles */
+.hamburger-container {
+  margin-left: -4rem;
+  margin-top: -1rem;
+}
+
+.list-container {
+  display: none;
+  width: 100%;
+  background-color: rebeccapurple;
+}
+
+.list-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.hamburger-menu {
+  display: none;
+}
+
+#close-icon {
+  opacity: 0;
+}
+
+.hamburger-menu {
+  position: relative;
+}
+
+#open-icon, #close-icon {
+  position: absolute;
+  transition: all 0.5s ease-in-out;
+}
+
+/* Table styles */
 .product-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 20px;
+  padding-right: 8rem;
 }
 
 .product-table th,
 .product-table td {
   text-align: center;
+}
+
+.view-all-table {
+  padding-top: 1rem;
+}
+
+.arrow {
+  cursor: pointer;
+}
+
+.about-content {
+  padding: 2rem;
+  padding-left: 4rem;
+  padding-bottom: 4rem;
+  text-align: justify;
+}
+
+.about-header {
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  font-size: 32px;
 }
 
 /* Responsive styles */
@@ -126,6 +221,7 @@ input[type="submit"].db-search-btn {
   .header {
     white-space: normal;
     word-wrap: break-word;
+    font-size: 24px;
   }
 
   input[type="text"],
@@ -135,16 +231,31 @@ input[type="submit"].db-search-btn {
   }
 }
 
-a {
-  cursor: pointer;
-}
-
 @media screen and (max-width: 600px) {
+  .scrapped-content {
+    align-items: flex-start;
+  }
+
+  .product-table {
+    padding-right: 0;
+  }
+
   .product-table td {
     max-width: 100px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .hamburger-menu {
+    display: block;
+    color: #fff;
+    font-size: 36px;
+    cursor: pointer;
+  }
+
+  .nav-links {
+    display: none;
   }
 }
 
