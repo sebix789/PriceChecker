@@ -34,17 +34,40 @@ class ProductScraper:
 
     def parse_media_expert(self, soup, url, product_name):
         offer = soup.select_one('div.offer-box')
+        # with open('output.txt', 'w', encoding='utf-8') as f:
+        #     f.write(soup.prettify())
+        # print(offer)
         if offer:
-            name = offer.select_one('a').text
-            price = offer.select_one('span.whole').text
-            link = offer.select_one('a')['href']
-            raw_url = url.split('//')[1].split('/')[0]
-            url = f'https://{raw_url}{link}'
-            timestamp = datetime.now().isoformat()
-            shop_name = 'Media Expert'
-            keywords = product_name.split(' ')
-            yield {'name': name, 'price': price, 'shop_name': shop_name, 'url': url, 'timestamp': timestamp, 
-                   'keywords': keywords }
+            a_tag = offer.select_one('a.spark-link')
+            # print(a_tag)
+            price_tag = offer.select_one('span.whole')
+            # print(price_tag)
+            if a_tag and 'href' in a_tag.attrs and price_tag:
+                name = a_tag.text
+                # print(a_tag.text.encode('utf-8', 'replace').decode('cp1252', 'replace'))
+                price = price_tag.text
+                # print(price_tag.text.encode('utf-8', 'replace').decode('cp1252', 'replace'))
+                link = a_tag['href']
+                raw_url = url.split('//')[1].split('/')[0]
+                url = f'https://{raw_url}{link}'
+                timestamp = datetime.now().isoformat()
+                shop_name = 'Media Expert'
+                keywords = product_name.split(' ')
+                yield {'name': name, 'price': price, 'shop_name': shop_name, 'url': url, 'timestamp': timestamp, 
+                       'keywords': keywords }
+        else:
+            single_offer = soup.select_one('div.product-show')
+            if single_offer:
+                name = single_offer.select_one('h1').text
+                price = single_offer.select_one('span.whole').text
+                link = url
+                raw_url = url.split('//')[1].split('/')[0]
+                url = f'{link}'
+                timestamp = datetime.now().isoformat()
+                shop_name = 'Media Expert'
+                keywords = product_name.split(' ')
+                yield {'name': name, 'price': price, 'shop_name': shop_name, 'url': url, 'timestamp': timestamp, 
+                       'keywords': keywords }
 
     def parse_x_kom(self, soup, url, product_name):
         offer = soup.select_one('div.sc-f5aee401-0')
@@ -61,7 +84,7 @@ class ProductScraper:
                    'keywords': keywords}
 
     def parse_ceneo(self, soup, url, product_name):
-        offer = soup.select_one('div.cat-prod-row')
+        offer = soup.select_one('div.js_products-list-main')
         if offer:
             new_badge = offer.select_one('a span.new-label')
             if new_badge:
@@ -114,7 +137,10 @@ def run_spider(product_name):
     db = client[env('DB_NAME')]
     collection = db['products']
 
-    collection.insert_many(new_products)
+    if new_products:
+        collection.insert_many(new_products)
+        
+    return new_products
 
 def products_search_service(product_name):    
     client = MongoClient(env('MONGO_URI'))
@@ -143,6 +169,18 @@ def shop_filter_service(shop_name):
         products = list(collection.find())
     else:
         products = list(collection.find({'shop_name': shop_name}))
+    
+    for product in products:
+        product['_id'] = str(product['_id'])
+        
+    return products
+
+def show_all():
+    client = MongoClient(env('MONGO_URI'))
+    db = client[env('DB_NAME')]
+    collection = db['products']
+    
+    products = list(collection.find())
     
     for product in products:
         product['_id'] = str(product['_id'])
