@@ -2,7 +2,7 @@
 
 Web app created for comparing product price and offers.
 
-# Instalation
+# Installation
 First you need to install MongoDB Community Server from official site https://www.mongodb.com/try/download/community
 Make sure to install also MongoDB Compass to graphical see and manage your data, but it's not required
 After successfull installation add Monogo to PATH variable by:
