@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .services import products_search_service, shop_filter_service
+from .services import products_search_service, shop_filter_service, show_all
 
 def index(request):
     if request.method == 'POST':
@@ -17,5 +17,16 @@ def results(request):
         if shop_name:
             products = shop_filter_service(shop_name)
     return render(request, 'priceChecker/results.html', {'products': products})
+
+def viewAll(request):
+    shop_name = request.GET.get('data_type', 'all')
+    if shop_name == 'all':
+        products = show_all()
+    else:
+        products = shop_filter_service(shop_name)
+    return render(request, 'priceChecker/viewAll.html', {'products': products, 'shop_name': shop_name})
+
+def about(request):
+    return render(request, 'priceChecker/about.html')
     
     

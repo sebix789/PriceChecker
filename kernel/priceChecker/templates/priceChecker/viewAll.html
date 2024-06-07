@@ -1,0 +1,84 @@
+{% extends 'priceChecker/index.html' %} {% block content %}
+<div class="scrapped-content">
+  <table class="product-table view-all-table">
+    <thead>
+      <tr>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>
+            <form method="get" id="shopForm">
+                <select name="data_type" id="shopSelect">
+                  <option value="all" {% if shop_name == "all" or not shop_name %}selected{% endif %}>All Shops</option>
+                  <option value="Ceneo.pl" {% if shop_name == "Ceneo.pl" %}selected{% endif %}>Ceneo.pl</option>
+                  <option value="Morele.net" {% if shop_name == "Morele.net" %}selected{% endif %}>Morele.net</option>
+                  <option value="Media Expert" {% if shop_name == "Media Expert" %}selected{% endif %}>Media Expert</option>
+                  <option value="Komputronik" {% if shop_name == "Komputronik" %}selected{% endif %}>Komputronik</option>
+                  <option value="X-Kom" {% if shop_name == "X-Kom" %}selected{% endif %}>X-Kom</option>
+                </select>
+              </form>
+        </th>
+        <th>URL</th>
+        <th>
+            Timestamp
+            <i class="fas fa-arrow-up arrow" id="sortAsc"></i>
+            <i class="fas fa-arrow-down arrow" id="sortDesc"></i>
+        </th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+      <tr>
+        <td>{{ product.name }}</td>
+        <td>{{ product.price }}</td>
+        <td>{{ product.shop_name }}</td>
+        <td><a href="{{ product.url }}">Link</a></td>
+        <td>{{ product.timestamp }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script>
+    function sortTable(order) {
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.querySelector(".product-table");
+        switching = true;
+      
+        while (switching) {
+          switching = false;
+          rows = table.rows;
+      
+          for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[4];
+            y = rows[i + 1].getElementsByTagName("TD")[4];
+      
+            if (order === 'asc' && new Date(x.innerHTML) > new Date(y.innerHTML)) {
+              shouldSwitch = true;
+              break;
+            } else if (order === 'desc' && new Date(x.innerHTML) < new Date(y.innerHTML)) {
+              shouldSwitch = true;
+              break;
+            }
+          }
+          if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+          }
+        }
+      }
+      
+    document.getElementById('shopSelect').addEventListener('change', function() {
+        document.getElementById('shopForm').submit();
+    });
+
+    document.getElementById('sortAsc').addEventListener('click', function() {
+        sortTable('asc')
+      });
+      
+      document.getElementById('sortDesc').addEventListener('click', function() {
+        sortTable('desc')
+      });
+</script>
+{% endblock %}

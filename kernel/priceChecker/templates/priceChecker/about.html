@@ -1,0 +1,60 @@
+{% extends 'priceChecker/index.html' %} {% block content %}
+<div class="about-content">
+    <h1 class="about-header">Price Checker</h1>
+        <p>Price Checked is a web project created for fighting with scammed capitalism.</p> 
+        <p>The main goal of the project is to show how different stores changes their products prices 
+            in large time period based on different holidays in the year.
+        </p>
+    <h1 class="about-header">How it works</h1>
+    <p>
+        Search for product you want to buy or look for and wait for the results. 
+    </p>
+    <p>
+        If application not shows you results immediately, it means that the product is not in the database yet.
+    </p>
+    <p>
+        In case of that please be patient, because the application automatically run spider throught the web and search for you
+        the best offers for the product you look for.
+    </p>
+    <br />
+    <p>
+        As you saw the result, the current product already be put to the database,
+        so the app will be able to periodically check the current price. And then you will find the best time to buy it.
+    </p>
+    <p>
+        Every user is able to see different products by choosing the shop name from the dropdown list on the result subpage.
+    </p>
+    <br />
+    <p>
+        You could also see all products exist in database by choose "Show All" in the navigation bar. 
+    </p>
+    <p>
+        There apart of flitering by shop, you could use the arrow buttons to sort by time, so you could see the exact price changing. 
+    </p>
+    <p>
+        Please note that "Show All" subpage shows you all gained data, so if you not find there your product,
+        click on the logo to go to the main page and gave the application ability to monitor product you look for, by searching it.
+    </p>
+    <h1 class="about-header">Donate</h1>
+    <p>
+        The application is and always will be FREE.
+    </p>
+    <p>
+        I created it to help community monitor the prices for product their wanted to buy and
+        not be scammed by this consumerism rat race like on FAKE FRIDAY.
+    </p>
+    <br />
+    <p>
+        The data is gained by web scrapping so every day I have to check if 
+        some stores change HTML content structure by updating their shops to make application properly working.
+    </p>
+    <p>
+        I also try to search for new shops 
+        to add to make searches the best it can be (in future I plan use AI to make it even better).
+    </p>
+    <br />
+    <p>
+        So if you like my work, support me and buy me a coffee -->
+    </p>
+</div>
+{% endblock %}
