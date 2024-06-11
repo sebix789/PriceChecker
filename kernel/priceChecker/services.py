@@ -71,9 +71,12 @@ class ProductScraper:
 
     def parse_x_kom(self, soup, url, product_name):
         offer = soup.select_one('div.sc-f5aee401-0')
+        with open('output.txt', 'w', encoding='utf-8') as f:
+            f.write(soup.prettify())
+        print(offer)
         if offer:
-            name = offer.select_one('h3.sc-99fda726-0 span').text
-            price = offer.select_one('span.sc-fzqMAW').text
+            name = offer.select_one('h3.sc-a8d94d6e-0 span').text
+            price = offer.select_one('span[data-name="productPrice"]').text
             link = offer.select_one('a')['href']
             raw_url = url.split('//')[1].split('/')[0]
             url = f'https://{raw_url}{link}'
