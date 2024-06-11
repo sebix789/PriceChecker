@@ -50,6 +50,9 @@ local_settings.py
 db.sqlite3
 media
 *.env
+*.bak
+*.dat
+*.dir
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
